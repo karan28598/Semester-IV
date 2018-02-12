@@ -1,0 +1,8 @@
+*Zener Diode Reverse Bias
+Vin 1 0 10Vdc
+r 1 2 1k
+d 2 0 zener
+.model zenerd(bv=2v)
+.dc Vin -10 10 0.5v
+.probe
+.end

@@ -1,0 +1,10 @@
+*JFET Characteristics
+vgg 1 0 dc 0v
+vdd 4 0 dc 0v
+rg 1 2 2meg
+rd 4 3 2k
+J 3 2 0 Jmod
+.model Jmodnjf(is=100e-16,vto=-10)
+.dc vdd 0 50v .5 vgg 0 -3 -1
+.probe
+.end

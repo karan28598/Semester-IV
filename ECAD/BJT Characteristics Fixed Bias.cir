@@ -1,0 +1,10 @@
+*BJT Characteristics Fixed Bias
+vbb 1 0 0v
+vcc 4 0 0v
+rb 1 2 8k
+rc 4 3 3.2k
+q 3 2 0 BJT
+.model BJT npm(ls=10E-16,Bf=220,Va=100V,CJe=5pf)
+.Dc vbb 0 10v .1v vcc 0 3v 1v
+.probe
+.end

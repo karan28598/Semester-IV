@@ -1,0 +1,10 @@
+*BJT Output Characteristics
+l1 1 0 5mldc
+R1 1 2 680
+R2 3 4 680
+V1 4 0 10Vdc
+Q1 2 3 5 BJT
+.MODEL BJT NPN(ls=10E-16, B = 255)
+.DC l1 0 5m 1m
+.PROBE
+.END

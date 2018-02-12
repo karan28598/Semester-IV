@@ -1,0 +1,10 @@
+*Clamper Circuit with bias
+Vin 1 0 sin(0V 5V 1k)
+C1 1 2 1m
+V1 2 3 2Vdc
+Diode 0 3 D1
+.model D1 D
+R3 2 0 1.1k
+.tran 0 5ms
+.probe
+.end

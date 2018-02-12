@@ -1,0 +1,16 @@
+*Full Wave Rectifier
+Vin 6 0 sin(0 230V 40Hz)
+r1 6 1 0.5
+l1 1 0 0.5h
+l2 2 0 0.5h
+l3 3 0 0.5h
+k12 l1 l2 0.999
+k23 l2 l3 0.999
+k31 l3 l1 0.999
+d1 2 4 diode
+d2 3 4 diode
+r 4 0 0.5k
+.model diode d
+.tran 0 50ms
+.probe
+.end

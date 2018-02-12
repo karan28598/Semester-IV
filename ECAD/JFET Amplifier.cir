@@ -1,0 +1,15 @@
+*JFET Amplifier
+vin 1 0 ac 20mv
+vdc 5 0 20v
+rg 2 0 1M
+rd 5 3 4.7k
+rs 4 0 1.5k
+j 3 2 4 JFET
+cin 1 2 100m
+cs 4 0 0.47u
+cout 3 6 100m
+rl 6 0 100k
+.model JFET njf (vto=-3 beta=1.2e-3 cgd=0.1nf,cgs=5nf)
+.Probe
+.ac dec 10 10 100meg
+.end

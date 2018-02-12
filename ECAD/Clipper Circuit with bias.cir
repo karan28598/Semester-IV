@@ -1,0 +1,9 @@
+*Clipper Circuit with bias
+Vin 1 0 sin(5V 0V 1khz)
+R1 1 2 1.1k
+V1 3 2 2Vdc
+Diode 3 0 D2
+.model D2 D
+.tran 0 5ms
+.probe
+.end

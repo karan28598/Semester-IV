@@ -1,0 +1,10 @@
+*BJT Input Characteristics
+V2 1 0 1v
+R1 1 2 680
+R2 3 4 680
+V1 4 0 10Vdc
+Q1 2 3 5 BJT
+.MODEL BJT NPN(ls=10E-16, B = 255)
+.DC V1 0 10v 1
+.PROBE
+.END

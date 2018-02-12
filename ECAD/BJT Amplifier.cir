@@ -1,0 +1,16 @@
+*BJT Amplifier
+vin 1 0 ac 20mv
+vdc 4 0 10v
+cin 1 2 0.47u
+r1 4 2 10k
+r2 2 0 1.5k
+rc 4 3 1k
+re 5 0 150
+q 3 2 5 BJT
+ce 5 0 10u
+cout 3 6 0.47u
+rl 6 0 100k
+.model BJT npn(BF=180,cjc=40pf,cje=60pf)
+.Probe
+.ac dec 10 10 1000meg
+.end
