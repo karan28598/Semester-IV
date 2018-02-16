@@ -1,0 +1,40 @@
+--TAHER 1512008
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+entity test is
+end entity;
+architecture test_a of test is
+component fifo is
+port(
+    d,clk,rst : in std_logic;
+    q,p : out std_logic);
+ end component;
+    signal d,clk,rst: std_logic;
+    signal q,p: std_logic;
+    begin
+    uut: fifo port map(d,clk,rst,q,p);
+    process
+    begin
+    rst<='1';
+    wait for 5ns;
+    clk<='1';
+    wait for 5ns;
+    d<='0';
+    wait for 5ns;
+    d<='1';
+    wait for 5ns;
+    clk<='0';
+    wait for 5ns;
+    d<='0';
+    wait for 5ns;
+    clk<='1';
+    wait for 5ns;
+    --clk<='0';
+    --wait for 5ns;
+    rst<='0';
+    wait for 5ns;
+    
+    end process;
+    end;

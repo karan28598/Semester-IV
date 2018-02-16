@@ -1,0 +1,101 @@
+--TAHER 1512008
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+entity bshift is
+port(
+   con : in std_logic_vector(1 downto 0);
+   s : in std_logic_vector(2 downto 0);
+   d : in std_logic_vector(7 downto 0);
+    q : out std_logic_vector(7 downto 0));
+end entity;
+architecture bit_arch of bshift is
+signal n:integer range 0 to 7;  
+function f_n(s:std_logic_vector(2 downto 0))
+return integer is
+variable re_var: integer range 0 to 7;
+begin case s is 
+when "000"=>re_var:=0; 
+when "001"=>re_var:=1; 
+when "010"=>re_var:=2; 
+when "011"=>re_var:=3; 
+when "100"=>re_var:=4; 
+when "101"=>re_var:=5; 
+when "110"=>re_var:=6; 
+when "111"=>re_var:=7; 
+when others=>null;
+end case;
+return re_var;
+end f_n;
+
+function f_rol(d:std_logic_vector(7 downto 0);
+              n:integer range 0 to 7)
+return std_logic_vector is
+variable re_var: std_logic_vector(7 downto 0);
+begin
+re_var:=d;
+for i in 7 downto 0 loop
+if(i<n) then 
+re_var:=re_var(6 downto 0)&re_var(7);
+end if;
+end loop;
+return re_var;
+end f_rol;
+
+
+function f_ror(d:std_logic_vector(7 downto 0);
+              n:integer range 0 to 7)
+return std_logic_vector is
+variable re_var: std_logic_vector(7 downto 0);
+begin
+re_var:=d;
+for i in 7 downto 0 loop
+if(i<n) then 
+re_var:=re_var(0)&re_var(7 downto 1);
+end if;
+end loop;
+return re_var;
+end f_ror;
+
+function f_shl(d:std_logic_vector(7 downto 0);
+              n:integer range 0 to 7)
+return std_logic_vector is
+variable re_var: std_logic_vector(7 downto 0);
+begin
+re_var:=d;
+for i in 7 downto 0 loop
+if(i<n) then 
+re_var:=re_var(6 downto 0)&'0';
+end if;
+end loop;
+return re_var;
+end f_shl;
+
+function f_shr(d:std_logic_vector(7 downto 0);
+              n:integer range 0 to 7)
+return std_logic_vector is
+variable re_var: std_logic_vector(7 downto 0);
+begin
+re_var:=d;
+for i in 7 downto 0 loop
+if(i<n) then 
+re_var:='0'&re_var(7 downto 1);
+end if;
+end loop;
+return re_var;
+end f_shr;
+
+begin
+n<=f_n(s);
+process(d,n,con)
+begin
+case con is
+when "00"=>q<=f_rol(d,n);
+when "01"=>q<=f_ror(d,n);                          
+when "10"=>q<=f_shl(d,n);
+when "11"=>q<=f_shr(d,n);
+when others=>null;
+end case ;
+end process;
+end bit_arch;

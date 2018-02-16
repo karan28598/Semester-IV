@@ -1,0 +1,26 @@
+library ieee;
+use ieee.std_logic_1164.all;
+entity bit_test is
+end bit_test;
+architecture bit_test_a of bit_test is 
+component bit is
+port(a,b: in std_logic_vector(3 downto 0);
+     s : out std_logic_vector(3 downto 0);
+     ci : in std_logic;
+     co : out std_logic);
+end component;
+signal ci,co :std_logic;
+signal s,a,b : std_logic_vector(3 downto 0);  
+begin 
+uut : bit port map (a,b,s,ci,co);
+process 
+begin
+a<="1100";
+b<="0111";
+ci<='0';
+wait for 20 ns;
+a(0)<="1111";
+b(0)<="0101";
+wait for 20 ns;
+end process;
+end ;

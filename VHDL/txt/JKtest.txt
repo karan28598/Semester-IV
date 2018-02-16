@@ -1,0 +1,22 @@
+--TAHER 1512008
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+entity test is
+end entity;
+architecture test_a of test is
+component jk is
+port(
+    j,k,clk,rst : in std_logic;
+    q,p : out std_logic);
+ end component;
+    signal j,k,clk,rst: std_logic:='0';
+    signal q,p: std_logic;
+    begin
+    uut: jk port map(j,k,clk,rst,q,p);
+    clk<=not clk after 2ns;
+    k<=not k after 10ns;
+    j<=not j after 20ns;
+    rst<=not rst after 40ns; 
+    end architecture;

@@ -1,0 +1,31 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+entity multi_tb is
+end entity;
+architecture test of multi_tb is
+component multi is
+port(
+ x: in std_logic_vector(3 downto 0);
+    y: out std_logic;
+    s: in std_logic_vector(1 downto 0)
+    );
+ end component;
+    signal x: std_logic_vector(3 downto 0):="0000";
+    signal y: std_logic:='0';
+    signal s: std_logic_vector(1 downto 0):="00";
+    begin
+    uut: mux port map(x,y,s);
+    process
+    begin
+    for i in 0 to 15 loop
+    wait for 5ns;
+    x<=x+1;
+    for j in 0 to 3 loop
+    wait for 5ns;
+    s<=s+1;
+    end loop;
+    end loop;
+    end process;
+    end;

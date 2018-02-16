@@ -1,0 +1,20 @@
+library ieee;
+use ieee.std_logic_1164.all;
+entity bit is
+port(a,b: in std_logic_vector(3 downto 0);
+     s : out std_logic_vector(3 downto 0);
+     ci : in std_logic;
+     co : out std_logic);
+end bit;
+architecture bit_arch of bit is 
+component Fulladder_struct is 
+port(a,b,cin : in std_logic;
+sum,cout: out std_logic);
+end component;
+signal c0,c1,c2 : std_logic;   
+begin
+a1 : Fulladder_struct port map (a(0),b(0),ci,s(0),c0);
+a2 : Fulladder_struct port map (a(1),b(1),c0,s(1),c1);
+a3 : Fulladder_struct port map (a(2),b(2),c1,s(2),c2);
+a1 : Fulladder_struct port map (a(3),b(3),c2,s(3),co);
+end bit_arch;

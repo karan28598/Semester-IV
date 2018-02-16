@@ -1,0 +1,31 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+entity shift is
+port(
+   clk,clr : in std_logic;
+   d: in std_logic_vector(3 downto 0);
+   s : in std_logic_vector(1 downto 0);
+   q : out std_logic_vector(3 downto 0));
+end entity;
+architecture bit_arch of shift is  
+ signal s1 :std_logic_vector(3 downto 0):="0000"; 
+begin
+process(clk)
+begin
+if(clk'event and clk='1') then
+if(clr='0') then
+   s1<="0000";
+else case s is   
+when "00"=>s1<=d;
+when "01"=>s1<=s1(2 downto 0)&'0';      
+when "10"=>s1<='0'&s1(2 downto 0);
+when "11"=>s1<=s1(0)&s1(2 downto 0);
+when others=>null;
+end case;                     
+end if;
+end if;
+end process;
+q<=s1;
+end bit_arch;

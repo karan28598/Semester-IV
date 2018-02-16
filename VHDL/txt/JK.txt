@@ -1,0 +1,32 @@
+--TAHER 1512008
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+entity jk is
+port(
+   j,k,clk,rst : in std_logic;
+    q,p : out std_logic);
+end jk;
+architecture bit_arch of jk is  
+ signal s1 :std_logic:='0'; 
+begin
+process(clk,rst)
+begin
+if(rst<='0') then
+   s1<='0';
+elsif(clk'event) and (clk='0') then
+if (j='0' and k='0') then
+s1<=s1;                          
+elsif(j='0' and k='1') then
+s1<='0';                          
+elsif(j='1' and k='0') then
+s1<='1';                          
+else
+s1<= not s1;                          
+end if;
+end if;
+end process;
+q<=s1;
+p<= not s1;
+end bit_arch;

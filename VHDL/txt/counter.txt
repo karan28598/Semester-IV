@@ -1,0 +1,27 @@
+--TAHER 1512008
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+entity counter is
+port(
+   clk,load,clr : in std_logic;
+    q : out std_logic_vector(3 downto 0));
+end entity;
+architecture bit_arch of counter is  
+ signal s1 :std_logic_vector(3 downto 0); 
+begin
+process(clk,clr)
+begin
+if(clr<='0') then
+   s1<="0000";
+elsif(clk'event) and (clk='1') then
+if (load='1') then
+s1<=s1-1;                          
+else
+s1<=s1+1;                           
+end if;
+end if;
+end process;
+q<=s1;
+end bit_arch;

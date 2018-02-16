@@ -1,0 +1,12 @@
+library ieee;
+use ieee.std_logic_1164.all;
+entity H_A is
+port(
+ a,b: in std_logic;
+ s,c: out std_logic);
+end H_A;
+architecture H_A_arch of H_A is 
+begin 
+      s<=a xor b;
+      c<=a and b;
+end H_A_arch;
