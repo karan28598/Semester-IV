@@ -81,7 +81,7 @@ int main(){
   printf("\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~\t\t\t\n");
   printf("\nChoose from the following numbers to book a room!\n101-110 -> Standard Rooms\n111-120 -> Deluxe Rooms\n121-130 -> Suite ");
   do{
-    printf("\nChoose your action \n1.Book a room\n2.Delete a room\n3.Display status of room booked\n4.Exit\n");
+    printf("\nChoose your action \n1.Book a room\n2.Vacate a room\n3.List of booked rooms\n4.Exit\n");
     scanf("%d",&ch);
     switch(ch){
       case 1:printf("Enter room number you want to book:");
@@ -97,7 +97,7 @@ int main(){
       case 2:dequeue();
              break;
              
-      case 3:printf("\nList of the rooms booked:\n ");
+      case 3:printf("\nThese are the rooms that are already occupied:\n ");
              display();
              break;
     }
