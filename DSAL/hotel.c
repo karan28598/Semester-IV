@@ -24,7 +24,7 @@ void enqueue(int x){
 void dequeue(){
   struct Node* temp = front;
   if(front == NULL){
-    printf("Queue is Empty\n");
+    printf("Hotel is empty\n");
     return;
   }
   if(front == rear){
@@ -67,15 +67,15 @@ int search(int p){
 }
 
 int main(){  
-  int n,ch,age,gg,status;
+  int n,ch,age,gg,status,rooms=0;
   long long phone_number;
   char name[100];
   do{
-  printf("1:Name: ");
+  printf("Name: ");
   scanf("%s",name);
-  printf("2:Age: ");
+  printf("Age: ");
   scanf("%d",&age);
-  printf("3:Phone number: ");
+  printf("Phone number: ");
   scanf("%lld",&phone_number);
   printf("\t\t\tWelcome to Hotel Paradise\t\t\t \n");
   printf("\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~\t\t\t\n");
@@ -84,13 +84,19 @@ int main(){
     printf("\nChoose your action \n1.Book a room\n2.Vacate a room\n3.List of booked rooms\n4.Exit\n");
     scanf("%d",&ch);
     switch(ch){
-      case 1:printf("Enter room number you want to book:");
-             scanf("%d",&n);
-             if(correct(n)){
-                 if(search(n)){
-                    enqueue(n); 
-                    printf("Room no. %d has been booked for you.\n", n);  
-                 }
+      case 1:if(rooms<30){
+                 printf("Enter room number you want to book:");
+                 scanf("%d",&n);
+                      if(correct(n)){
+                         if(search(n)){
+                            enqueue(n); 
+                            printf("Room no. %d has been booked for you.\n", n); 
+                            rooms++;
+                         }
+                     }   
+             }
+             else{
+                 printf("All the rooms are occupied. Please wait in the queue until a room gets vacated. Inconvenience is regretted.");
              }
              break;
              
