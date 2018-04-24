@@ -1,111 +1,102 @@
-#include <stdio.h>
-#include <stdlib.h>
- 
-struct node
-{
-    int vertex;
-    struct node* next;
-};
+#include<stdio.h>
+#include<stdlib.h>
 
-struct node* createNode(int v);
+#define MAX 100
 
-struct Graph
-{
-    int numVertices;
-    int* visited;
-    struct node** adjLists; // we need int** to store a two dimensional array. Similary, we need struct node** to store an array of Linked lists
-};
+#define initial 1
+#define visited 2
 
-struct Graph* createGraph(int);
-void addEdge(struct Graph*, int, int);
-void printGraph(struct Graph*);
-void DFS(struct Graph*, int);
+int n;    
+int adj[MAX][MAX]; 
+int state[MAX]; 
 
+int stack[MAX];
+int top = -1;
+
+void push(int v){
+    if(top == (MAX-1)){
+        printf("\nStack Overflow\n");
+        return;
+    }
+    top=top+1;
+    stack[top] = v;
+
+}
+
+int pop(){
+    int v;
+    if(top == -1){
+        printf("\nStack Underflow\n");
+        exit(1);
+    }
+    else{
+        v = stack[top];
+        top=top-1;
+        return v;
+    }
+}
+
+int isEmpty_stack( ){
+  if(top == -1)
+      return 1;
+  else
+      return 0;
+}
+
+void DFS(int v){
+    int i;
+    push(v);
+    while(!isEmpty_stack()){
+        v = pop();
+        if(state[v]==initial){
+            printf("%d ",v);
+            state[v]=visited;
+        }
+        for(i=n-1; i>=0; i--){
+            if(adj[v][i]==1 && state[i]==initial)
+                push(i);
+        }
+    }
+}
+
+void DF_Traversal(){
+    int v;
+
+    for(v=0; v<n; v++)
+        state[v]=initial;
+
+    printf("\nEnter start Vertex for DFS: ");
+    scanf("\n%d",&v);
+    DFS(v);
+    printf("\n");
+}
+
+void create_graph(){
+    int i,max_edges,origin,destin;
+
+    printf("\nEnter number of vertices: ");
+    scanf("%d",&n);
+    max_edges=n*(n-1);
+
+    for(i=1;i<=max_edges;i++){
+        printf("\nEnter edge %d( -1 -1 to quit ) : ",i);
+        scanf("%d %d",&origin,&destin);
+
+        if( (origin == -1) && (destin == -1) )
+            break;
+
+        if( origin >= n || destin >= n || origin<0 || destin<0){
+            printf("\nInvalid edge!\n");
+            i--;
+        }
+        else{
+            adj[origin][destin] = 1;
+        }
+    }
+}
 
 int main()
 {
-
-    struct Graph* graph = createGraph(4);
-    addEdge(graph, 0, 1);
-    addEdge(graph, 0, 2);
-    addEdge(graph, 1, 2);
-    addEdge(graph, 2, 3);
-    
-    printGraph(graph);
-
-    DFS(graph, 2);
-    
-    return 0;
-}
-
-void DFS(struct Graph* graph, int vertex) {
-        struct node* adjList = graph->adjLists[vertex];
-        struct node* temp = adjList;
-        
-        graph->visited[vertex] = 1;
-        printf("Visited %d \n", vertex);
-    
-        while(temp!=NULL) {
-            int connectedVertex = temp->vertex;
-        
-            if(graph->visited[connectedVertex] == 0) {
-                DFS(graph, connectedVertex);
-            }
-            temp = temp->next;
-        }       
-}
-
- 
-struct node* createNode(int v)
-{
-    struct node* newNode = malloc(sizeof(struct node));
-    newNode->vertex = v;
-    newNode->next = NULL;
-    return newNode;
-}
-
-struct Graph* createGraph(int vertices)
-{
-    struct Graph* graph = malloc(sizeof(struct Graph));
-    graph->numVertices = vertices;
- 
-    graph->adjLists = malloc(vertices * sizeof(struct node*));
-    
-    graph->visited = malloc(vertices * sizeof(int));
- 
-    int i;
-    for (i = 0; i < vertices; i++) {
-        graph->adjLists[i] = NULL;
-        graph->visited[i] = 0;
-    }
-    return graph;
-}
- 
-void addEdge(struct Graph* graph, int src, int dest)
-{
-    // Add edge from src to dest
-    struct node* newNode = createNode(dest);
-    newNode->next = graph->adjLists[src];
-    graph->adjLists[src] = newNode;
- 
-    // Add edge from dest to src
-    newNode = createNode(src);
-    newNode->next = graph->adjLists[dest];
-    graph->adjLists[dest] = newNode;
-}
- 
-void printGraph(struct Graph* graph)
-{
-    int v;
-    for (v = 0; v < graph->numVertices; v++)
-    {
-        struct node* temp = graph->adjLists[v];
-        printf("\n Adjacency list of vertex %d\n ", v);
-        while (temp)
-        {
-            printf("%d -> ", temp->vertex);
-            temp = temp->next;
-        }
-        printf("\n");
-    }
+    create_graph();
+    DF_Traversal();
 }

@@ -1,175 +1,106 @@
-#include <stdio.h>
-#include <stdlib.h>
-#define SIZE 40
-
-struct queue {
-    int items[SIZE];
-    int front;
-    int rear;
-};
-
-struct queue* createQueue();
-void enqueue(struct queue* q, int);
-int dequeue(struct queue* q);
-void display(struct queue* q);
-int isEmpty(struct queue* q);
-void printQueue(struct queue* q);
-
-struct node
-{
-    int vertex;
-    struct node* next;
-};
-
-struct node* createNode(int);
-
-struct Graph
-{
-    int numVertices;
-    struct node** adjLists;
-    int* visited;
-};
-
-struct Graph* createGraph(int vertices);
-void addEdge(struct Graph* graph, int src, int dest);
-void printGraph(struct Graph* graph);
-void bfs(struct Graph* graph, int startVertex);
-
-int main()
-{
-    struct Graph* graph = createGraph(6);
-    addEdge(graph, 0, 1);
-    addEdge(graph, 0, 2);
-    addEdge(graph, 1, 2);
-    addEdge(graph, 1, 4);
-    addEdge(graph, 1, 3);
-    addEdge(graph, 2, 4);
-    addEdge(graph, 3, 4);
+#include<stdio.h>
+#include<stdlib.h>
  
-    bfs(graph, 0);
+#define MAX 100  
  
-    return 0;
-}
-
-void bfs(struct Graph* graph, int startVertex) {
-
-    struct queue* q = createQueue();
-    
-    graph->visited[startVertex] = 1;
-    enqueue(q, startVertex);
-    
-    while(!isEmpty(q)){
-        printQueue(q);
-        int currentVertex = dequeue(q);
-        printf("Visited %d\n", currentVertex);
-    
-       struct node* temp = graph->adjLists[currentVertex];
-    
-       while(temp) {
-            int adjVertex = temp->vertex;
-
-            if(graph->visited[adjVertex] == 0){
-                graph->visited[adjVertex] = 1;
-                enqueue(q, adjVertex);
-            }
-            temp = temp->next;
-       }
-    }
-}
-
+#define initial 1
+#define waiting 2
+#define visited 3
  
-struct node* createNode(int v)
-{
-    struct node* newNode = malloc(sizeof(struct node));
-    newNode->vertex = v;
-    newNode->next = NULL;
-    return newNode;
+int n;    
+int adj[MAX][MAX];
+int state[MAX]; 
+
+void BF_Traversal(){
+    int v;
+    
+    for(v=0; v<n; v++) 
+        state[v] = initial;
+    
+    printf("Enter Start Vertex for BFS: \n");
+    scanf("%d", &v);
+    BFS(v);
 }
  
-
-struct Graph* createGraph(int vertices)
-{
-    struct Graph* graph = malloc(sizeof(struct Graph));
-    graph->numVertices = vertices;
- 
-    graph->adjLists = malloc(vertices * sizeof(struct node*));
-    graph->visited = malloc(vertices * sizeof(int));
-    
- 
+void BFS(int v){
     int i;
-    for (i = 0; i < vertices; i++) {
-        graph->adjLists[i] = NULL;
-        graph->visited[i] = 0;
+    
+    insert_queue(v);
+    state[v] = waiting;
+    
+    while(!isEmpty_queue()){
+        v = delete_queue();
+        printf("%d ",v);
+        state[v] = visited;
+        
+        for(i=0; i<n; i++){
+            if(adj[v][i] == 1 && state[i] == initial) {
+                insert_queue(i);
+                state[i] = waiting;
+            }
+        }
     }
- 
-    return graph;
+    printf("\n");
 }
  
-void addEdge(struct Graph* graph, int src, int dest)
-{
-    // Add edge from src to dest
-    struct node* newNode = createNode(dest);
-    newNode->next = graph->adjLists[src];
-    graph->adjLists[src] = newNode;
+void create_graph(){
+    int count,max_edge,origin,destin;
  
-    // Add edge from dest to src
-    newNode = createNode(src);
-    newNode->next = graph->adjLists[dest];
-    graph->adjLists[dest] = newNode;
+    printf("Enter number of vertices : ");
+    scanf("%d",&n);
+    max_edge = n*(n-1);
+ 
+    for(count=1; count<=max_edge; count++){
+        printf("Enter edge %d( -1 -1 to quit ) : ",count);
+        scanf("%d %d",&origin,&destin);
+ 
+        if((origin == -1) && (destin == -1))
+            break;
+ 
+        if(origin>=n || destin>=n || origin<0 || destin<0){
+            printf("Invalid edge!\n");
+            count--;
+        }
+        else{
+            adj[origin][destin] = 1;
+        }
+    }
 }
 
-struct queue* createQueue() {
-    struct queue* q = malloc(sizeof(struct queue));
-    q->front = -1;
-    q->rear = -1;
-    return q;
+int queue[MAX], front = -1,rear = -1;
+
+void insert_queue(int vertex){
+    if(rear == MAX-1)
+        printf("Queue Overflow\n");
+    else{
+        if(front == -1) 
+            front = 0;
+        rear = rear+1;
+        queue[rear] = vertex ;
+    }
 }
-
-
-int isEmpty(struct queue* q) {
-    if(q->rear == -1) 
+ 
+int isEmpty_queue(){
+    if(front == -1 || front > rear)
         return 1;
-    else 
+    else
         return 0;
 }
-
-void enqueue(struct queue* q, int value){
-    if(q->rear == SIZE-1)
-        printf("\nQueue is Full!!");
-    else {
-        if(q->front == -1)
-            q->front = 0;
-        q->rear++;
-        q->items[q->rear] = value;
+ 
+int delete_queue(){
+    int delete_item;
+    if(front == -1 || front > rear){
+        printf("Queue Underflow\n");
+        exit(1);
     }
+    
+    delete_item = queue[front];
+    front = front+1;
+    return delete_item;
 }
-
-int dequeue(struct queue* q){
-    int item;
-    if(isEmpty(q)){
-        printf("Queue is empty");
-        item = -1;
-    }
-    else{
-        item = q->items[q->front];
-        q->front++;
-        if(q->front > q->rear){
-            printf("Resetting queue");
-            q->front = q->rear = -1;
-        }
-    }
-    return item;
-}
-
-void printQueue(struct queue *q) {
-    int i = q->front;
-
-    if(isEmpty(q)) {
-        printf("Queue is empty");
-    } else {
-        printf("\nQueue contains \n");
-        for(i = q->front; i < q->rear + 1; i++) {
-                printf("%d ", q->items[i]);
-        }
-    }    
+ 
+int main(){
+    create_graph();
+    BF_Traversal();
+    return 0;
 }
